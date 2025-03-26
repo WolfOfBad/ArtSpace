@@ -22,7 +22,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -54,13 +54,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ArtSpaceApp(isTablet: Boolean, isPhone: Boolean) {
-    val artworks = listOf(
-        Artwork(R.drawable.mona_lisa, "Mona Lisa", "Leonardo da Vinci", "1503"),
-        Artwork(R.drawable.starry_night, "Starry Night", "Vincent van Gogh", "1889"),
-        Artwork(R.drawable.campbell_can, "Campbell's Soup Cans", "Andy Warhol", "1962")
-    )
-
-    var currentIndex by rememberSaveable { mutableStateOf(0) }
+    var currentIndex by rememberSaveable { mutableIntStateOf(0) }
 
     Column(
         modifier = Modifier
@@ -69,46 +63,11 @@ fun ArtSpaceApp(isTablet: Boolean, isPhone: Boolean) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Bottom
     ) {
-        Surface(
-            modifier = Modifier
-                .fillMaxHeight(if (isTablet) 0.65f else 0.6f)
-                .aspectRatio(3f / 4f),
-            shadowElevation = 16.dp,
-            color = Color.White
-        ) {
-            Image(
-                painter = painterResource(id = artworks[currentIndex].imageRes),
-                contentDescription = artworks[currentIndex].title,
-                contentScale = ContentScale.Fit,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp)
-            )
-        }
+        ArtImage(isTablet, currentIndex)
 
         Spacer(modifier = Modifier.height(if (isTablet && isPhone) 5.dp else 40.dp))
 
-        Column(
-            Modifier
-                .background(color = Color(0xFFdbdbdb))
-                .padding(if (isTablet && isPhone) 1.dp else 8.dp)
-        )
-        {
-            Text(
-                text = artworks[currentIndex].title,
-                style = MaterialTheme.typography.headlineMedium.copy(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = if (isTablet && isPhone) 16.sp else 24.sp
-                )
-            )
-            Spacer(modifier = Modifier.size(if (isTablet && isPhone) 0.dp else 2.dp))
-            Text(
-                text = "${artworks[currentIndex].artist}, ${artworks[currentIndex].year}",
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontSize = if (isTablet && isPhone) 12.sp else 20.sp
-                )
-            )
-        }
+        ArtistInfo(isTablet, isPhone, currentIndex)
 
         Spacer(modifier = Modifier.height(if (isTablet or (isTablet && isPhone)) 5.dp else 20.dp))
 
@@ -123,7 +82,7 @@ fun ArtSpaceApp(isTablet: Boolean, isPhone: Boolean) {
                     width = if (isTablet) 160.dp else 100.dp,
                     height = if (isTablet) 60.dp else 40.dp
                 ),
-                onClick = { currentIndex = (--currentIndex + artworks.size) % artworks.size }
+                onClick = { currentIndex = (currentIndex + artworks.size - 1) % artworks.size }
             ) {
                 Text(
                     text = "Back",
@@ -146,7 +105,50 @@ fun ArtSpaceApp(isTablet: Boolean, isPhone: Boolean) {
     }
 }
 
-data class Artwork(val imageRes: Int, val title: String, val artist: String, val year: String)
+@Composable
+fun ArtImage(isTablet: Boolean, currentIndex: Int) {
+    Surface(
+        modifier = Modifier
+            .fillMaxHeight(if (isTablet) 0.65f else 0.6f)
+            .aspectRatio(3f / 4f),
+        shadowElevation = 16.dp,
+        color = Color.White
+    ) {
+        Image(
+            painter = painterResource(id = artworks[currentIndex].imageRes),
+            contentDescription = artworks[currentIndex].title,
+            contentScale = ContentScale.Fit,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+        )
+    }
+}
+
+@Composable
+fun ArtistInfo(isTablet: Boolean, isPhone: Boolean, currentIndex: Int) {
+    Column(
+        Modifier
+            .background(color = Color(0xFFdbdbdb))
+            .padding(if (isTablet && isPhone) 1.dp else 8.dp)
+    )
+    {
+        Text(
+            text = artworks[currentIndex].title,
+            style = MaterialTheme.typography.headlineMedium.copy(
+                fontWeight = FontWeight.Bold,
+                fontSize = if (isTablet && isPhone) 16.sp else 24.sp
+            )
+        )
+        Spacer(modifier = Modifier.size(if (isTablet && isPhone) 0.dp else 2.dp))
+        Text(
+            text = "${artworks[currentIndex].artist}, ${artworks[currentIndex].year}",
+            style = MaterialTheme.typography.bodyMedium.copy(
+                fontSize = if (isTablet && isPhone) 12.sp else 20.sp
+            )
+        )
+    }
+}
 
 @Preview(showBackground = true)
 @Composable
