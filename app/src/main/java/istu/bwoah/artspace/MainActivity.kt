@@ -88,26 +88,21 @@ fun ArtSpaceApp() {
         ) {
             Button(
                 modifier = Modifier.size(
-                    width = if (!isPortrait) 160.dp else 100.dp,
-                    height = if (!isPortrait) 60.dp else 40.dp
+                    width = if (isPortrait) 120.dp else 160.dp,
+                    height = if (isPortrait) 45.dp else 60.dp
                 ),
-                onClick = { currentIndex = (currentIndex + artworks.size - 1) % artworks.size }
-            ) {
+                onClick = { currentIndex = (currentIndex + artworks.size - 1) % artworks.size }) {
                 Text(
-                    text = "Back",
-                    fontSize = if (!isPortrait) 20.sp else 16.sp
+                    text = "Back", fontSize = if (isPortrait) 16.sp else 20.sp
                 )
             }
             Button(
                 modifier = Modifier.size(
-                    width = if (!isPortrait) 160.dp else 100.dp,
-                    height = if (!isPortrait) 60.dp else 40.dp
-                ),
-                onClick = { currentIndex = ++currentIndex % artworks.size }
-            ) {
+                    width = if (isPortrait) 120.dp else 160.dp,
+                    height = if (isPortrait) 45.dp else 60.dp
+                ), onClick = { currentIndex = ++currentIndex % artworks.size }) {
                 Text(
-                    text = "Next",
-                    fontSize = if (!isPortrait) 20.sp else 16.sp
+                    text = "Next", fontSize = if (isPortrait) 16.sp else 20.sp
                 )
             }
         }
@@ -123,8 +118,7 @@ fun ArtImage(isPortrait: Boolean, currentIndex: Int) {
         modifier = Modifier
             .wrapContentSize()
             .sizeIn(maxHeight = maxHeight, maxWidth = maxWidth)
-            .shadow(16.dp, shape = RoundedCornerShape(8.dp)),
-        color = Color.White
+            .shadow(16.dp, shape = RoundedCornerShape(8.dp)), color = Color.White
     ) {
         Image(
             painter = painterResource(id = artworks[currentIndex].imageRes),
@@ -148,8 +142,7 @@ fun ArtistInfo(currentIndex: Int) {
         Text(
             text = artworks[currentIndex].title,
             style = MaterialTheme.typography.headlineMedium.copy(
-                fontWeight = FontWeight.Bold,
-                fontSize = 24.sp
+                fontWeight = FontWeight.Bold, fontSize = 24.sp
             ),
             textAlign = TextAlign.Center
         )
