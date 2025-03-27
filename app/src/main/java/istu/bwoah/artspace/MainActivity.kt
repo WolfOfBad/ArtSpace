@@ -62,22 +62,28 @@ fun ArtSpaceApp() {
         modifier = Modifier
             .fillMaxSize()
             .padding(10.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        ArtImage(isPortrait, currentIndex)
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            ArtImage(isPortrait, currentIndex)
 
-        Spacer(modifier = Modifier.height(15.dp))
+            Spacer(modifier = Modifier.height(15.dp))
 
-        ArtistInfo(currentIndex)
-
-        Spacer(modifier = Modifier.height(if (isPortrait) 20.dp else 5.dp))
+            ArtistInfo(currentIndex)
+        }
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(if (isPortrait) 20.dp else 5.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Bottom
         ) {
             Button(
                 modifier = Modifier.size(
@@ -106,6 +112,7 @@ fun ArtSpaceApp() {
         }
     }
 }
+
 
 @Composable
 fun ArtImage(isPortrait: Boolean, currentIndex: Int) {
