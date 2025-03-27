@@ -35,6 +35,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -139,27 +140,30 @@ fun ArtImage(isPortrait: Boolean, currentIndex: Int) {
 @Composable
 fun ArtistInfo(currentIndex: Int) {
     Column(
-        Modifier
+        modifier = Modifier
             .background(color = Color(0xFFdbdbdb))
-            .padding(5.dp)
-    )
-    {
+            .padding(5.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Text(
             text = artworks[currentIndex].title,
             style = MaterialTheme.typography.headlineMedium.copy(
                 fontWeight = FontWeight.Bold,
                 fontSize = 24.sp
-            )
+            ),
+            textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.size(2.dp))
         Text(
             text = "${artworks[currentIndex].artist}, ${artworks[currentIndex].year}",
             style = MaterialTheme.typography.bodyMedium.copy(
                 fontSize = 18.sp
-            )
+            ),
+            textAlign = TextAlign.Center
         )
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
